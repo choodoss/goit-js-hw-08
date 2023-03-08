@@ -35,8 +35,10 @@
   display: block;
   text-decoration: none;
   height: 100%;
+  transition: transform var(--animation-duration) var(--timing-function);
 }
 
 .gallery__link:hover {
   cursor: zoom-in;
+  transform: scale(1.03);
 }
