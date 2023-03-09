@@ -1,21 +1,43 @@
 import throttle from 'lodash.throttle';
 
 const feedBackForm = document.querySelector('.feedback-form');
+const emailInputEl = feedBackForm.querySelector('input');
+const messageInputEl = feedBackForm.querySelector('textarea');
 
-function hendlerSaveData({ target }) {
-    const KEY = "feedback-form-state";
-    localStorage.setItem(KEY, JSON.stringify({email, message}))
-    console.log();
-    if (target.type === 'email') {
-        console.dir(localStorage);
-
-        console.log(localStorage.getItem(KEY));
-    }
-    if (target.type === 'textarea') {
-        localStorage.setItem(KEY, JSON.stringify({message: target.value.trim()}))
-        console.log(target.type);
-    }
-
+const KEY = "feedback-form-state";
+resetSaveData();
+const data = {
+    email: '',
+    message: '',
 };
 
-feedBackForm.addEventListener('input', hendlerSaveData)
+function hendlerSaveData({ target }) {
+
+    switch (target.type) {
+        case 'email': data.email = target.value;
+            break;
+        case 'textarea': data.message = target.value;
+            break
+    }
+    localStorage.setItem(KEY, JSON.stringify(data))
+};
+
+function hendlerSend(e) {
+    e.preventDefault();
+
+    console.log(`email: ${JSON.parse(localStorage.getItem(KEY)).email}`)
+    console.log(`message: ${JSON.parse(localStorage.getItem(KEY)).message}`)
+
+    e.currentTarget.reset();
+    localStorage.removeItem(KEY);
+};
+
+function resetSaveData() {
+    if (localStorage.getItem(KEY) !== null) {
+        emailInputEl.value = JSON.parse(localStorage.getItem(KEY)).email;
+        messageInputEl.value = JSON.parse(localStorage.getItem(KEY)).message;
+    }
+};
+
+feedBackForm.addEventListener('input', throttle(hendlerSaveData, 500));
+feedBackForm.addEventListener('submit', hendlerSend);
