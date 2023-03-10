@@ -4,7 +4,7 @@ import Player from '@vimeo/player';
 
 const iframe = document.querySelector('iframe');
 const player = new Player(iframe);
-KEYLOCAL = "videoplayer-current-time";
+const KEYLOCAL = "videoplayer-current-time";
 let isTimeNow = localStorage.getItem(KEYLOCAL)
 
 function CurrentTime(e) {

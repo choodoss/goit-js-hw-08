@@ -12,30 +12,37 @@ const data = {
 };
 
 function hendlerSaveData({ target }) {
-
-    switch (target.type) {
-        case 'email': data.email = target.value;
-            break;
-        case 'textarea': data.message = target.value;
-            break
+    const localData = JSON.parse(localStorage.getItem(KEY));
+    if (localData !== null) {
+        data.email = localData.email;
+        data.message = localData.message;
+    }
+    if (target.type === 'email') {
+        data.email = target.value;
+    }
+    if (target.type === 'textarea') {
+        data.message = target.value
     }
     localStorage.setItem(KEY, JSON.stringify(data))
-};
 
+};
 function hendlerSend(e) {
     e.preventDefault();
-
-    console.log(`email: ${JSON.parse(localStorage.getItem(KEY)).email}`)
-    console.log(`message: ${JSON.parse(localStorage.getItem(KEY)).message}`)
+    const localData = JSON.parse(localStorage.getItem(KEY));
+    console.log(`email: ${localData.email}`)
+    console.log(`message: ${localData.message}`)
 
     e.currentTarget.reset();
     localStorage.removeItem(KEY);
+    data.message = '';
+    data.email = '';
 };
 
 function resetSaveData() {
-    if (localStorage.getItem(KEY) !== null) {
-        emailInputEl.value = JSON.parse(localStorage.getItem(KEY)).email;
-        messageInputEl.value = JSON.parse(localStorage.getItem(KEY)).message;
+    const localData = JSON.parse(localStorage.getItem(KEY));
+    if (localData !== null) {
+        emailInputEl.value = localData.email;
+        messageInputEl.value = localData.message;
     }
 };
 

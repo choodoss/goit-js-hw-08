@@ -5,7 +5,6 @@ import { galleryItems } from './gallery-items';
 // Change code below this line
 
 const galleryEl = document.querySelector('.gallery');
-
 const addGalleryItems = galleryItems.map(({ preview, original, description }) => `<a class="gallery__item gallery__link" href="${original}"><img class="gallery__image" src="${preview}" alt="${description}"/></a>`).join("");
 
 galleryEl.insertAdjacentHTML('beforeend', addGalleryItems);
@@ -15,14 +14,4 @@ let gallery = new SimpleLightbox('.gallery__item', {
     captionDelay: 250,
     captionsData: 'alt',
     captionPosition: 'bottom',
-});
-
-const partOfMarking = marking(galleryItems);
-
-gallery.insertAdjacentHTML("beforeend", partOfMarking);
-let lightbox = new SimpleLightbox(".gallery a", {
-    captionSelector: "img",
-    captionsData: "alt",
-    captionPosition: "bottom",
-    captionDelay: 250,
 });
