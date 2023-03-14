@@ -1,14 +1,14 @@
 import throttle from 'lodash.throttle';
-import localMetods from './storage';
+import { load, save, remove } from './storage';
 
 const feedBackForm = document.querySelector('.feedback-form');
 const KEY = "feedback-form-state";
 resetForm();
 
 function hendlerInputForm({ target }) {
-    let localData = localMetods.load(KEY) || {};
+    let localData = load(KEY) || {};
     localData[target.name] = target.value;
-    localMetods.save(KEY, localData);
+    save(KEY, localData);
 };
 
 function hendlerSavedata(e) {
@@ -18,12 +18,12 @@ function hendlerSavedata(e) {
     formData.forEach((value, name) => userData[name] = value)
     console.log(userData)
     feedBackForm.reset();
-    localMetods.remove(KEY);
+    remove(KEY);
 };
 
 function resetForm() {
     if (localStorage.getItem(KEY)) {
-        Object.entries(localMetods.load(KEY)).forEach(([key, value]) => {
+        Object.entries(load(KEY)).forEach(([key, value]) => {
             feedBackForm.elements[key].value = value;
         });
     }
