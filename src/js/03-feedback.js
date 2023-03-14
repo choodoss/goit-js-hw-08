@@ -1,33 +1,31 @@
 import throttle from 'lodash.throttle';
+import localMetods from './storage';
 
 const feedBackForm = document.querySelector('.feedback-form');
 const KEY = "feedback-form-state";
 resetForm();
 
 function hendlerInputForm({ target }) {
-    let localData = localStorage.getItem(KEY);
-    localData = localData !== true ? JSON.parse(localData) : {};
-    console.log(localStorage.getItem(KEY))
+    let localData = localMetods.load(KEY) || {};
     localData[target.name] = target.value;
-    localStorage.setItem(KEY, JSON.stringify(localData))
+    localMetods.save(KEY, localData);
 };
 
 function hendlerSavedata(e) {
     e.preventDefault();
-    console.log(feedBackForm.elements)
-    for (let i = 0; i < 2; i += 1) {
-        console.log(`${feedBackForm.elements}: ${feedBackForm.elements[i].value}`)
-    }
-    console.log(`${feedBackForm.elements}: ${feedBackForm.elements[0].value}`)
-
+    const userData = {};
+    const formData = new FormData(feedBackForm);
+    formData.forEach((value, name) => userData[name] = value)
+    console.log(userData)
+    feedBackForm.reset();
+    localMetods.remove(KEY);
 };
 
 function resetForm() {
     if (localStorage.getItem(KEY)) {
-        const localData = JSON.parse(localStorage.getItem(KEY));
-        console.log(Object.entries(localData).forEach(([key, value]) => {
+        Object.entries(localMetods.load(KEY)).forEach(([key, value]) => {
             feedBackForm.elements[key].value = value;
-        }));
+        });
     }
 };
 
