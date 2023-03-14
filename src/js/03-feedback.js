@@ -6,8 +6,9 @@ const KEY = "feedback-form-state";
 resetForm();
 
 function hendlerInputForm({ target }) {
+    const {name, value} = target;
     let localData = load(KEY) || {};
-    localData[target.name] = target.value;
+    localData[name] = value;
     save(KEY, localData);
 };
 
